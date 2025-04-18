@@ -33,7 +33,10 @@ export async function POST(req: Request) {
         },
         });
 
-        return NextResponse.json({ message: 'Utilisateur enregistré !', user }, { status: 201 });
+        return NextResponse.json(
+            { message: 'Utilisateur enregistré !', user: { id: user.id, name: user.name, firstname: user.firstname, email: user.email } },
+            { status: 201 }
+        );
     } catch (error) {
         console.error('Erreur serveur:', error);
         return NextResponse.json(

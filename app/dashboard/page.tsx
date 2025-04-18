@@ -27,7 +27,7 @@ function Dashboardpage() {
                 <section className='lg:w-[70%]'>
                     <div className="sm:flex gap-4 w-full mb-3">
                         {/* item */}
-                        <div className="px-4 py-3 rounded-xl w-full bg-green-400 text-white md:mb-0 mb-2">
+                        <div className="px-4 py-3 rounded-xl w-full bg-[#047857] text-white md:mb-0 mb-2">
                             <div className='mb-8'>
                                 <h1 className='text-md'>Total de Post</h1>
                             </div>
