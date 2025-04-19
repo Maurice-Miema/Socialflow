@@ -14,7 +14,7 @@ export default function DashboardLayout({
     return (
         <div className="bg-slate-200 sm:px-2 sm:py-2 gap-4">
             <Navbar />
-            <div className="p-2 md:h-[85vh] h-screen overflow-auto max-sm:pt-14">
+            <div className="p-2 md:h-[85vh] h-screen overflow-auto max-sm:pt-16">
                 {children}
             </div>
         </div>
