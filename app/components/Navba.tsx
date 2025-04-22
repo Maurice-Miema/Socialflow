@@ -1,16 +1,20 @@
 'use client'
 import Link from 'next/link'
+import { useUser } from '@/app/context/UserContext'
 import { usePathname } from 'next/navigation'
 import { IoNotificationsCircleOutline } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
 import { MdClose } from "react-icons/md";
-import { useState } from 'react';
-import LoginOut from "./LoginOut";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from 'react';
+import Logout from "./Logout";
+import { motion } from "framer-motion";
+
 
 export default function Navbar() {
     const pathname = usePathname()
+    const { user } = useUser();
     const [isMenu, setIsMenu] = useState(false);
+    const [islogout, setIsLogout] = useState(false);
 
     const links = [
         { name: 'Dashboard', href: '/dashboard' },
@@ -19,6 +23,11 @@ export default function Navbar() {
         { name: 'Historique', href: '/dashboard/historique'}
     ]
 
+    const handleLogout = ()=> {
+        setIsLogout(!islogout);
+    }
+
+    // afficher le menu des ecrans md
     const handleMenu = ()=> {
         setIsMenu(!isMenu);
     }
@@ -47,6 +56,7 @@ export default function Navbar() {
                     <img src="../assets/logo.png" alt="picture user" className='size-10 cursor-pointer' />
                 </div>
 
+                {/* la nav links */}
                 <div className="gap-2 sm:flex hidden">
                     {links.map(link => (
                         <Link
@@ -66,13 +76,30 @@ export default function Navbar() {
                         <IoNotificationsCircleOutline size={30} />
                     </div>
                     <div className='flex justify-center items-center gap-1'>
-                        <img src="../assets/avatar.png" alt="picture user" className='size-12' />
-                        <span className='hidden lg:block'>Miema Maurice</span>
+                        <div>
+                            <img src="../assets/avatar.png" alt="picture user" className='size-12' />
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className='cursor-pointer'
+                        >
+                            <div className='leading-none'>
+                                <span className='hidden lg:block'>
+                                    {user?.name} {user?.firstname}
+                                </span>
+                                <span className='hidden lg:block text-gray-500 text-sm'>
+                                    {user?.email}
+                                </span>
+                            </div>
+                        </button>
                     </div>
 
-                    <div className="absolute mt-24 bg-red-500 text-white p-4 rounded-md hidden">
-                        < LoginOut />
-                    </div>
+                    {islogout && (
+                        <div className="absolute mt-28 bg-slate-50 p-4 rounded-md">
+                            < Logout />
+                        </div>
+                    )}
                 </div>
 
                 <div className="sm:hidden block">

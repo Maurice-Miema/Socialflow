@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import bcrypt from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 
@@ -9,33 +9,34 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, firstname, email, password } = body;
+        const { email, password } = body;
 
-        if (!name || !firstname || !email || !password) {
+        if (!email || !password) {
             return NextResponse.json(
                 { error: 'Tous les champs sont requis.' },
                 { status: 400 }
             );
         }
 
-        const existingUser = await prisma.user.findUnique({ where: { email } });
-        if (existingUser) {
+        const user = await prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (!user) {
             return NextResponse.json(
-                { error: 'Cet email est déjà utilisé.' },
-                { status: 409 }
+                { message: 'Email ou mot de passe incorrect' },
+                { status: 401 }
             );
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const isPasswordCorrect = await compare(password, user.password);
 
-        const user = await prisma.user.create({
-            data: {
-                name,
-                firstname,
-                email,
-                password: hashedPassword,
-            },
-        });
+        if (!isPasswordCorrect) {
+            return NextResponse.json(
+                { message: 'Email ou mot de passe incorrect' },
+                { status: 401 }
+            );
+        }
 
         // Création du token JWT
         const token = jwt.sign(
@@ -59,7 +60,7 @@ export async function POST(req: Request) {
 
         const response = NextResponse.json(
             {
-                message: 'Utilisateur enregistré !',
+                message: 'Connexion réussie.',
                 user: {
                     id: user.id,
                     name: user.name,
@@ -67,7 +68,7 @@ export async function POST(req: Request) {
                     email: user.email,
                 },
             },
-            { status: 201 }
+            { status: 200 }
         );
 
         response.headers.set('Set-Cookie', cookie);

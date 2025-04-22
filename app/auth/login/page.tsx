@@ -4,9 +4,14 @@ import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { FcGoogle } from "react-icons/fc";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 
 function Loginpage() {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [serverError, setServerError] = useState("");
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -20,10 +25,16 @@ function Loginpage() {
         setFormData({...formData, [e.target.name]: e.target.value});
         // delete error
         setErrors({...errors, [e.target.name]: ""});
+        setIsLoading(false); 
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (isLoading) return;
+
+        setIsLoading(true);
+        setServerError("");
 
         const newErrors: typeof errors = {
             email: "",
@@ -36,12 +47,36 @@ function Loginpage() {
         setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some((errors) => errors !== "");
-        if(hasErrors) return;
+        if(hasErrors) {
+            setIsLoading(false);
+            return;
+        };
 
         try {
-            console.log("le data de la connexion", formData);
+            const res = await axios.post("/api/auth/login", formData, {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                router.push("/dashboard");
+            }else {
+                setServerError(" Email ou mot de passe incorrect ");
+            }
         } catch (error) {
-            console.error(error);
+            console.error("Erreur lors de la connexion :", error);
+            if (axios.isAxiosError(error) && error.response) {
+                const status = error.response.status;
+
+                if (status === 401) {
+                    setServerError("Email ou mot de passe incorrect.");
+                } else {
+                    const message = (error.response.data as any)?.message || "Une erreur est survenue.";
+                    setServerError("Erreur serveur : " + message);
+                }
+            } else {
+                setServerError("Connexion impossible. Vérifiez votre réseau.");
+            }
+        }finally {
+            setIsLoading(false);
         }
     }
     return (
@@ -55,6 +90,10 @@ function Loginpage() {
                         <h1 className='flex justify-center'>Se connecter</h1>
                     </div>
 
+                    {serverError && (
+                        <p className="text-red-500 text-xl mb-2 text-center">{serverError}</p>
+                    )}
+                    
                     {/* item */}
                     <div className='mb-5'>
                         <label htmlFor="email" className='block pb-2'>Email</label>
@@ -98,11 +137,18 @@ function Loginpage() {
 
                     {/* btn */}
                     <div className="mb-4">
-                        <button 
+                        <button
                             type="submit"
-                            className='w-full py-2 cursor-pointer font-medium text-xl border-none bg-[#047857] text-white rounded-lg'
+                            disabled={isLoading}
+                            className="w-full py-2 cursor-pointer font-medium text-xl border-none bg-[#047857] text-white rounded-lg flex justify-center items-center"
                         >
-                            Se connecter
+                            {isLoading ? (
+                                <>
+                                    <span className="inline-block w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+                                </>
+                            ) : (
+                                "Se connecter"
+                            )}
                         </button>
                     </div>
 

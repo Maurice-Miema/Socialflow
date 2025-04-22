@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SessionWrapper from "./lib/SessionWrapper";
+import { UserProvider } from './context/UserContext'
 
 export const metadata: Metadata = {
   title: "App Socialflow",
@@ -17,10 +18,11 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="en">
         <body>
-          {children}
+          <UserProvider>
+            {children}
+          </UserProvider>
         </body>
       </html>
     </SessionWrapper>
-    
   );
 }

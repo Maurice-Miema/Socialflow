@@ -12,6 +12,9 @@ import { motion } from 'framer-motion';
 import Link from 'next/link'
 
 function Dashboardpage() {
+
+
+    // animation
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i: number) => ({
@@ -30,14 +33,30 @@ function Dashboardpage() {
             <div className='mb-2 flex items-center'>
                 <h1 className='text-2xl'>Dashboard</h1>
                 <div className="flex justify-end w-full">
-                    <Link 
-                        href="/dashboard/post"
-                        type="button"
-                        className='sm:px-3 sm:py-2 px-2 py-1 rounded-md bg-black text-white max-sm:text-md flex items-center gap-2 cursor-pointer'
-                    >
-                        < IoAddSharp size={20} />
-                        Creer un Post
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            className='sm:px-3 sm:py-2 px-2 py-1 rounded-md bg-black text-white max-sm:text-md flex items-center gap-2 cursor-pointer'
+                        >
+                            Facebook
+                        </button>
+
+                        <button
+                            type="button"
+                            className='sm:px-3 sm:py-2 px-2 py-1 rounded-md bg-black text-white max-sm:text-md flex items-center gap-2 cursor-pointer'
+                        >
+                            LinkedIn
+                        </button>
+
+                        {/* <Link 
+                            href="/dashboard"
+                            type="button"
+                            className='sm:px-3 sm:py-2 px-2 py-1 rounded-md bg-black text-white max-sm:text-md flex items-center gap-2 cursor-pointer'
+                        >
+                            < IoAddSharp size={20} />
+                            Creer un Post
+                        </Link> */}
+                    </div>
                 </div>
             </div>
 
