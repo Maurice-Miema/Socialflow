@@ -58,8 +58,6 @@ function Loginpage() {
             });
             if (res.status === 200) {
                 router.push("/dashboard");
-            }else {
-                setServerError(" Email ou mot de passe incorrect ");
             }
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);
@@ -93,7 +91,7 @@ function Loginpage() {
                     {serverError && (
                         <p className="text-red-500 text-xl mb-2 text-center">{serverError}</p>
                     )}
-                    
+
                     {/* item */}
                     <div className='mb-5'>
                         <label htmlFor="email" className='block pb-2'>Email</label>

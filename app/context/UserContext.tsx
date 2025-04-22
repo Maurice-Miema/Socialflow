@@ -31,11 +31,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('/api/auth/me');
+                const res = await axios.get('/api/auth/me',
+                    { withCredentials: true }
+                );
                 setUser(res.data.user);
             } catch (error) {
                 setUser(null);
-                router.push('/auth/login'); // Décommente ici si tu veux forcer la redirection des non connectés
+                router.push('/auth/login'); 
             } finally {
                 setLoading(false);
             }
