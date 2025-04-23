@@ -1,10 +1,7 @@
-import Link from 'next/link';
 import React from 'react'
-import { IoAddSharp } from 'react-icons/io5';
-import { FaFacebook } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaLinkedin } from 'react-icons/fa'
 
-function Postpage() {
+function ConnectAccounts() {
     return (
         <>
             <div className='flex justify-center items-center h-[82vh]'>
@@ -47,4 +44,4 @@ function Postpage() {
     )
 }
 
-export default Postpage;
+export default ConnectAccounts

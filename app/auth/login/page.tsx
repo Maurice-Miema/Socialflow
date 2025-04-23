@@ -67,8 +67,8 @@ function Loginpage() {
                 if (status === 401) {
                     setServerError("Email ou mot de passe incorrect.");
                 } else {
-                    const message = (error.response.data as any)?.message || "Une erreur est survenue.";
-                    setServerError("Erreur serveur : " + message);
+                    const message = (error.response.data as any)?.message || "Une erreur est survenue, Vérifiez votre réseau.";
+                    setServerError(message);
                 }
             } else {
                 setServerError("Connexion impossible. Vérifiez votre réseau.");
@@ -125,12 +125,11 @@ function Loginpage() {
                     {/* end */}
 
                     <div className="flex justify-end w-full mb-4">
-                        <Link 
-                            href="/dashboard"
+                        <button 
                             className='text-[#059669] cursor-pointer'
                         >
                             Mot de passe oublier ?
-                        </Link>
+                        </button>
                     </div>
 
                     {/* btn */}

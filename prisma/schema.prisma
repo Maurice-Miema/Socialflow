@@ -13,6 +13,8 @@ model User {
   firstname String
   email     String   @unique
   password  String
+  facebookConnected Boolean @default(false)
+  linkedinConnected Boolean @default(false)
   createdAt DateTime @default(now())
 }
 

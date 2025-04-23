@@ -120,7 +120,7 @@ export default function Navbar() {
                     className={`fixed inset-0 bg-black/30 backdrop-blur-md mt-14 pt-10 px-2 transition-all duration-300 ease-in-out ${
                         isMenu ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
-                    >
+                >
                     <div className="flex justify-center text-center">
                         <div className="flex flex-col">
                             {links.map((link) => (

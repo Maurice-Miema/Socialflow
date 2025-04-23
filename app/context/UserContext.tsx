@@ -9,6 +9,8 @@ type User = {
     name: string
     firstname: string
     email: string
+    facebookConnected: boolean
+    linkedinConnected: boolean
 }
 
 type UserContextType = {
