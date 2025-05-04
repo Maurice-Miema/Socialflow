@@ -66,6 +66,9 @@ export async function POST(req: Request) {
                     name: user.name,
                     firstname: user.firstname,
                     email: user.email,
+                    facebookConnected: user.facebookConnected,
+                    linkedinConnected: user.linkedinConnected,
+                    facebookAccessToken: user.facebookAccessToken,
                 },
             },
             { status: 200 }

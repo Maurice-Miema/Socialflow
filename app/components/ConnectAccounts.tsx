@@ -1,7 +1,17 @@
+'use client'
+import { signIn } from 'next-auth/react'
 import React from 'react'
 import { FaFacebook, FaLinkedin } from 'react-icons/fa'
 
 function ConnectAccounts() {
+
+    const handleFacebookSignIn = async () => {
+        signIn("facebook", { 
+            callbackUrl: "/link/facebook" 
+        });
+
+    };
+
     return (
         <>
             <div className='flex justify-center items-center h-[82vh]'>
@@ -24,6 +34,7 @@ function ConnectAccounts() {
                     <div className="flex justify-center gap-2 max-sm:flex-col">
                         <button 
                             type="button"
+                            onClick={handleFacebookSignIn}
                             className='flex items-center gap-2 py-3 sm:px-4 px-2 rounded-md bg-blue-500 text-white cursor-pointer max-sm:justify-center'
                         >
                             < FaFacebook size={25} />

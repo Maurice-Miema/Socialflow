@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdOutlinePublic } from "react-icons/md";
@@ -12,17 +12,26 @@ import { useUser } from '@/app/context/UserContext';
 import ConnectAccounts from '../components/ConnectAccounts'
 
 function Dashboardpage() {
-    const { user, loading } = useUser();
+    const { user, loading, refreshUser } = useUser();
+
+    const [refreshed, setRefreshed] = useState(false);
+
+    useEffect(() => {
+        console.log('Utilisateur récupéré:', user);
+        if (!loading && user && !refreshed && (!user.facebookConnected || !user.linkedinConnected)) {
+            refreshUser().then(() => setRefreshed(true));
+        }
+    }, [loading, user, refreshed, refreshUser]);
 
     if (loading) {
-        return console.log("Chargeent.....")
+        return console.log("Chargement.....");
     }
 
     if (!user) {
         return console.log("User non authentifier !") // sécurité en cas de souci
     }
 
-    const noAccountConnected = !user.facebookConnected && !user.linkedinConnected
+    const noAccountConnected = user.facebookConnected || user.linkedinConnected
     // animation
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -40,8 +49,6 @@ function Dashboardpage() {
     return (
         <>
             {noAccountConnected ? ( 
-                < ConnectAccounts />
-            ) : (
                 <>
                     <div className='mb-2 flex items-center'>
                         <h1 className='text-2xl'>Dashboard</h1>
@@ -261,6 +268,9 @@ function Dashboardpage() {
                         </section>
                     </section>
                 </>
+                
+            ) : (
+                < ConnectAccounts />
             )}
         </>
     )

@@ -14,13 +14,15 @@ type User = {
 }
 
 type UserContextType = {
-    user: User | null
-    loading: boolean
+    user: User | null;
+    loading: boolean;
+    refreshUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType>({
     user: null,
     loading: true,
+    refreshUser: async () => {},
 })
 
 export const useUser = () => useContext(UserContext)
@@ -30,26 +32,29 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get('/api/auth/me',
-                    { withCredentials: true }
-                );
-                setUser(res.data.user);
-            } catch (error) {
-                setUser(null);
-                router.push('/auth/login'); 
-            } finally {
-                setLoading(false);
-            }
+    const fetchUser = async () => {
+        try {
+            const res = await axios.get('/api/auth/me', { withCredentials: true });
+            setUser(res.data.user);
+        } catch (error) {
+            setUser(null);
+            router.push('/auth/login');
+        } finally {
+            setLoading(false);
         }
+    };
 
-        fetchUser()
+    useEffect(() => {
+        fetchUser();
     }, []);
 
+    const refreshUser = async () => {
+        setLoading(true);
+        await fetchUser();
+    }
+
     return (
-        <UserContext.Provider value={{ user, loading }}>
+        <UserContext.Provider value={{ user, loading, refreshUser }}>
             {children}
         </UserContext.Provider>
     );
