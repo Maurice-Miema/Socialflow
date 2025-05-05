@@ -1,15 +1,14 @@
 'use client'
 import { signIn } from 'next-auth/react'
 import React from 'react'
-import { FaFacebook, FaLinkedin } from 'react-icons/fa'
+import { FaFacebook, FaLinkedin } from 'react-icons/fa';
 
 function ConnectAccounts() {
-
+    
     const handleFacebookSignIn = async () => {
         signIn("facebook", { 
             callbackUrl: "/link/facebook" 
         });
-
     };
 
     return (
@@ -41,7 +40,7 @@ function ConnectAccounts() {
                             Connecter mon compte Facebook
                         </button>
 
-                        <button 
+                        <button
                             type="button"
                             className='flex items-center gap-2 py-3 sm:px-4 px-2 bg-black text-white rounded-md cursor-pointer max-sm:justify-center'
                         >

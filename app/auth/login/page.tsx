@@ -57,7 +57,7 @@ function Loginpage() {
                 withCredentials: true,
             });
             if (res.status === 200) {
-                router.push("/dashboard");
+                router.push("/main");
             }
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);

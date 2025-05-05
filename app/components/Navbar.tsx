@@ -11,16 +11,16 @@ import { motion } from "framer-motion";
 
 
 export default function Navbar() {
-    const pathname = usePathname()
+    const pathname = usePathname();
     const { user } = useUser();
     const [isMenu, setIsMenu] = useState(false);
     const [islogout, setIsLogout] = useState(false);
 
     const links = [
-        { name: 'Dashboard', href: '/dashboard' },
-        { name: 'Poster', href: '/dashboard/post' },
-        { name: 'Planification', href: '/dashboard/planification'},
-        { name: 'Historique', href: '/dashboard/historique'}
+        { name: 'Dashboard', href: '/main' },
+        { name: 'Poster', href: '/main/post' },
+        { name: 'Planification', href: '/main/planification'},
+        { name: 'Historique', href: '/main/historique'}
     ]
 
     const handleLogout = ()=> {

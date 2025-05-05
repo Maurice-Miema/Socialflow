@@ -90,7 +90,7 @@ function Registerpage() {
 
             if (res.status === 201) {
                 // Rediriger l'utilisateur vers le tableau de bord
-                router.push("/dashboard");
+                router.push("/main");
             }
         } catch (err: any) {
             if (axios.isCancel(err)) {
